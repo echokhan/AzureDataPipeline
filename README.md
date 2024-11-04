@@ -19,3 +19,7 @@ The pipeline follows a layered architecture:
 4. **Orchestration**: Schedules and coordinates data loads (hourly and batch).
 5. **Monitoring**: Provides alerts and failure notifications to ensure the pipeline is running smoothly.
 6. **Visualization**: Connects the final semantic layer to Power BI for live and historical reporting.
+
+## Data Model
+![image](https://github.com/user-attachments/assets/4445f8eb-d8a0-4ef1-93ae-301ffb2a285e)
+
