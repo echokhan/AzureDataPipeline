@@ -5,13 +5,13 @@
 This project implements an end-to-end ETL pipeline to ingest, process, and store weather data from multiple sources (REST API and CSV file) into a cloud-based data warehouse, making it ready for visualization. This pipeline is designed to handle both real-time and batch processing, with orchestration and monitoring capabilities for robust, scalable data processing.
 
 ## Architecture
-![plot](Images/WeatherETL Architecture.png)
+![WeatherETL](https://github.com/user-attachments/assets/a5236f4a-a206-405b-bde5-d447da5a29b3)
 
 The pipeline follows a layered architecture:
 1. **Data Sources**:
-   - **OpenWeather API (Hourly)**: Provides real-time weather data through an API.
+   - **OpenWeather API (Hourly)**: Provides real-time (hourly) weather data through an API.
    - **Historical Weather Data CSV**: Stored in a cloud-based data lake for batch loading.
-2. **Data Lake**: Used as a staging area for the CSV file before ingestion into the data warehouse.
+2. **Data Lake**: Used as a landing area for the CSV file before ingestion into the data warehouse.
 3. **Data Warehouse**: Organized into three layers:
    - **Raw Layer**: Stores raw ingested data from both the API and batch sources.
    - **Transformed Layer**: Data is cleaned, normalized, and transformed here for analysis.
