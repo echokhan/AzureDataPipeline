@@ -1,0 +1,23 @@
+CREATE TABLE transformed.weatherdata (
+date_only date,
+time_only nvarchar(8),
+city_name nvarchar(50),
+latitude float,
+longitude float,
+temperature float,
+visibility int,
+dew_point float,
+feels_like int,
+temp_min float,
+temp_max float,
+pressure int,
+humidity int,
+wind_speed int,
+wind_deg int,
+clouds_all int,
+weather_id int,
+weather_main nvarchar(30),
+weather_description nvarchar(50),
+source nvarchar(10),
+raw_timestamp DATETIME
+);
