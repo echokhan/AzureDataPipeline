@@ -33,5 +33,54 @@ This layered data model ensures a clean, organized, and optimized approach to da
 This structured approach makes the pipeline scalable, maintainable, and adaptable for new data sources or additional transformations in the future.
 More detail in Data directory.
 
+## Orchestration
+Batch Load Pipeline
+![image](https://github.com/user-attachments/assets/34e43cae-3125-4318-bd71-f7fa3b0b5d2b)
+### Batch Data Load Pipeline
+
+This pipeline automates the batch data ingestion and processing for weather data stored in blob storage, performing a sequence of ETL steps and handling notifications for errors. Here’s a breakdown of each step:
+1. **Copy Data - Blob to Raw Batch Load**:
+   - This step copies data from the blob storage (data lake) into the `raw.batch_weatherdata` table in the data warehouse. It initiates the batch load process.
+2. **Stored Procedure - `uspUpsertDimCity`**:
+   - This procedure upserts city information into the `dim.city` table, ensuring that city metadata is available for data enrichment in subsequent steps.
+3. **Stored Procedure - `uspBatchUpsertTransformedWeatherData`**:
+   - This procedure merges and transforms raw data with city information, populating the `transformed.weatherdata` table.
+   - The upsert is based on unique columns such as city_name, dt and weather_id
+4. **Stored Procedure - `uspTruncateInsertSemanticWeatherData`**:
+   - This step truncates and inserts data into the `semantic.weatherdata` table, which is optimized for reporting and visualization.
+5. **Archive Bulk Load**:
+   - After successfully loading and processing data, this step archives the batch data from the landing directory to a specified archival directory in blob storage, preserving historical data for future reference.
+6. **Delete Landing Bulk Load**:
+   - Finally, the pipeline deletes the original batch data from the landing directory, freeing up storage space and maintaining data lake hygiene.
+
+#### Error Handling
+- **Failure Notification Emails**:
+   - If any of the critical stored procedures fail, a notification email is sent to alert the team, allowing for prompt troubleshooting and resolution.
+
+
+### Hourly Load Pipeline
+![image](https://github.com/user-attachments/assets/0dbf8b88-a692-4b4d-95c2-e0fc7f64e52a)
+
+This pipeline ingests and processes real-time weather data from the OpenWeather API on an hourly basis. It iterates over each city, fetching the latest weather data and updating the data warehouse. Here’s a breakdown of each step in this process:
+
+1. **Lookup - List Cities**:
+   - This initial step retrieves a list of cities from the `dim.city` table. The list is used to iterate over each city in the subsequent steps.
+2. **ForEach - ForEachCity**:
+   - This loop iterates through each city obtained from the lookup step. For each city, the following activities are performed:
+   - **API to Raw Hourly Load**:
+     - Loads the hourly weather data from the OpenWeather API into the `raw.hourly_weatherdata` table, storing it as raw data for auditing and historical reference.
+   - **Stored Procedure - `uspHourlyUpsertTransformedWeatherData`**:
+     - This stored procedure transforms and upserts data into the `transformed.weatherdata` table. It processes the raw data, applies any necessary transformations, and enriches it by joining with city information.
+   - **Stored Procedure - `uspTruncateInsertSemanticWeatherData`**:
+     - This step further processes the data by truncating and inserting it into the `semantic.weatherdata` table, which is optimized for reporting. It ensures that only the most current data is available for analysis and visualization.
+   - **Failure Notification**:
+     - If any part of the pipeline fails, a failure notification is triggered, sending an email to alert the team. This allows for immediate troubleshooting and ensures that issues are promptly addressed.
+
+#### Summary
+The hourly data load pipeline ensures that the data warehouse is continuously updated with real-time weather information for each city. By iterating over the list of cities and applying the required transformations, this pipeline makes the data available for reporting with minimal latency. The failure notification mechanism provides robust error handling, improving the reliability of the pipeline.
+
+
+
+
 
 
