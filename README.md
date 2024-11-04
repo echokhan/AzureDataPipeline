@@ -21,5 +21,6 @@ The pipeline follows a layered architecture:
 6. **Visualization**: Connects the final semantic layer to Power BI for live and historical reporting.
 
 ## Data Model
-![image](https://github.com/user-attachments/assets/4445f8eb-d8a0-4ef1-93ae-301ffb2a285e)
+![image](https://github.com/user-attachments/assets/eead3164-39f5-46d7-b834-d4582c463c16)
+
 
