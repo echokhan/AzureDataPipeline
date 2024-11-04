@@ -1,0 +1,356 @@
+{
+	"name": "HourlyLoad",
+	"properties": {
+		"activities": [
+			{
+				"name": "List Cities",
+				"description": "Look up into dim.city",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT * FROM [dim].[city]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SQL_dim_city",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachCity",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "List Cities",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('List Cities').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "APItoRawHourlyLoad",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "$['lat']"
+											},
+											"sink": {
+												"name": "lat",
+												"type": "Double"
+											}
+										},
+										{
+											"source": {
+												"path": "$['lon']"
+											},
+											"sink": {
+												"name": "lon",
+												"type": "Double"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['dt']"
+											},
+											"sink": {
+												"name": "dt",
+												"type": "Int64"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['temp']"
+											},
+											"sink": {
+												"name": "temp",
+												"type": "Double"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['feels_like']"
+											},
+											"sink": {
+												"name": "feels_like",
+												"type": "Double"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['pressure']"
+											},
+											"sink": {
+												"name": "pressure",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['humidity']"
+											},
+											"sink": {
+												"name": "humidity",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['dew_point']"
+											},
+											"sink": {
+												"name": "dew_point",
+												"type": "Double"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['clouds']"
+											},
+											"sink": {
+												"name": "clouds_all",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['visibility']"
+											},
+											"sink": {
+												"name": "visibility",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['wind_speed']"
+											},
+											"sink": {
+												"name": "wind_speed",
+												"type": "Double"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['wind_deg']"
+											},
+											"sink": {
+												"name": "wind_deg",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['weather'][0]['id']"
+											},
+											"sink": {
+												"name": "weather_id",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['weather'][0]['main']"
+											},
+											"sink": {
+												"name": "weather_main",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['hourly'][0]['weather'][0]['description']"
+											},
+											"sink": {
+												"name": "weather_description",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['daily'][0]['temp']['min']"
+											},
+											"sink": {
+												"name": "temp_min",
+												"type": "Double"
+											}
+										},
+										{
+											"source": {
+												"path": "$['daily'][0]['temp']['max']"
+											},
+											"sink": {
+												"name": "temp_max",
+												"type": "Double"
+											}
+										}
+									]
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "RESTAPI_HourlyWeatherData",
+									"type": "DatasetReference",
+									"parameters": {
+										"lat": {
+											"value": "@item().lat",
+											"type": "Expression"
+										},
+										"lon": {
+											"value": "@item().lon",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SQL_raw_Hourly_WeatherData",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "uspHourlyUpsertTransformedWeatherData",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "APItoRawHourlyLoad",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[uspHourlyUpsertTransformedWeatherData]"
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase1",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "uspTruncateInsertSemanticWeatherData",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "uspHourlyUpsertTransformedWeatherData",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[uspTruncateInsertSemanticWeatherData]"
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase1",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Failure Notification Email",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "uspTruncateInsertSemanticWeatherData",
+									"dependencyConditions": [
+										"Skipped",
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"method": "POST",
+								"url": "https://prod-01.uksouth.logic.azure.com:443/workflows/b86ee8bd275c48b698b1f95e65ac3307/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=1h-FKobPr1STVZm4y-B0X-lGJI52M-4WCSJlQi6zGNs",
+								"body": {
+									"value": "{\n    \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"message\": \"Your pipeline with run ID @{pipeline().RunId} has failed.\",\n    \"pipelineName\": \"@{pipeline().Pipeline}\",\n    \"receiver\": \"@{pipeline().parameters.OperationsEmail}\"\n}",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"OperationsEmail": {
+				"type": "string",
+				"defaultValue": "#####@cardiff.ac.uk"
+			}
+		},
+		"annotations": []
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"name": "OpenWeatherHourlyData",
+	"properties": {
+		"parameters": {
+			"Latitude": {
+				"type": "string",
+				"defaultValue": "51.48"
+			},
+			"Longitude": {
+				"type": "string",
+				"defaultValue": "-2.17"
+			},
+			"API_Key": {
+				"type": "string",
+				"defaultValue": "#######"
+			}
+		},
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "@{concat('https://api.openweathermap.org/data/3.0/onecall?lat=', linkedService().Latitude, '&lon=', linkedService().Longitude, '&appid=', linkedService().API_Key)}",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}

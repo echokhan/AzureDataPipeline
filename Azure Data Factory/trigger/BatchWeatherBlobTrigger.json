@@ -1,0 +1,26 @@
+{
+	"name": "BatchWeatherBlobTrigger",
+	"properties": {
+		"description": "This trigger is a storage event which should ",
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "BatchLoad",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/weatherproject/blobs/batch_data/BatchWeatherData.csv",
+			"blobPathEndsWith": ".csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/48338062-edae-47b1-9ed7-19c41d9c6aae/resourceGroups/WeatherProject/providers/Microsoft.Storage/storageAccounts/weatherstoragehekhan",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
