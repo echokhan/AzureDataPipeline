@@ -23,5 +23,15 @@ The pipeline follows a layered architecture:
 ## Data Model
 ![image](https://github.com/user-attachments/assets/3c7c9538-5fa8-4f43-82b5-540e5039922a)
 
+The data model for this ETL pipeline is designed with three primary layers to manage data processing and transformation, ensuring each layer serves a specific purpose in preparing data for analysis and reporting. The model progresses through raw, transformed, and semantic layers, each with its own tables and processes.
+This layered data model ensures a clean, organized, and optimized approach to data processing. Each layer serves a specific function in the ETL pipeline:
+- **Raw Layer**: Ingests and stores unprocessed data.
+- **Dimensional Table**: Enriches data with city information.
+- **Transformed Layer**: Cleanses and prepares data for reporting.
+- **Semantic Layer**: Final reporting-ready data for visualization.
+
+This structured approach makes the pipeline scalable, maintainable, and adaptable for new data sources or additional transformations in the future.
+More detail in Data directory.
+
 
 
