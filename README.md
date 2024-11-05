@@ -4,6 +4,7 @@
 ## 1- Overview
 This project implements an end-to-end ETL pipeline to ingest, process, and store weather data from multiple sources (REST API and CSV file) into a cloud-based data warehouse, making it ready for visualization. This pipeline is designed to handle both real-time and batch processing, with orchestration and monitoring capabilities for robust, scalable data processing.
 ### Key Features:
+* Event and Metadata Driven: Batch pipeline is triggered by file uploads, whereas hourly pipeline is scheduled and takes input from control table (dim.city)
 * Idempotency: Upserts/merge are used to ensure that no duplication of any weather record occurs and all rows in transformed and semantic layers are unique for an hour, city and weather_id.
 * Operational Montoring: Failure updates for any pipeline are configured for all activities, ensuring prompt measures.
 * Holistic Visualization: Dashboard visualizes live and historical data, along with an attempt to forecast weather.
