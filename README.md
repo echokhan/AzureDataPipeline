@@ -10,6 +10,7 @@ This project implements an end-to-end ETL pipeline to ingest, process, and store
 * Data Lineage: Audit columns such as raw_timestamp and source allow source and original time tracking.
 * Event Driven: Use of dim city as control table and scheduled triggers make the pipeline highly automated, requiring minimum intervention.
 * Backfilling: Due to the nature of idempotency, backfilling is an embeded feature and old data can be updated or even inserted based on hour, city and weather_id.
+* Robustness: Retry mechanisms are in place within the orchestration (e.g., if the API or file ingestion fails, the system should retry before sending failure notifications)
 
 
 ## 2- Architecture
