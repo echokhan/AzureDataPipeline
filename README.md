@@ -125,6 +125,6 @@ This dashboard combines real-time data, historical trends, and forecasted weathe
 
 
 ## 7- Future Work
-Schema Validation: Get Metadata activity in ADF can be used to validate schema of API and bulk CSV.
-
+* Schema Validation: Get Metadata activity in ADF can be used to validate schema of API and bulk CSV.
+* Optimization: Possible use of lakehouse for partitioning. This will result in cost reduction for storage and compute resulting in scalability. Optimization of joins and queries by indexing key columns.
 
