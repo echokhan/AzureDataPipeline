@@ -1,0 +1,70 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "triggers": {
+            "When_a_HTTP_request_is_received": {
+                "type": "Request",
+                "kind": "Http",
+                "inputs": {
+                    "schema": {
+                        "properties": {
+                            "dataFactoryName": {
+                                "type": "string"
+                            },
+                            "message": {
+                                "type": "string"
+                            },
+                            "pipelineName": {
+                                "type": "string"
+                            },
+                            "receiver": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "actions": {
+            "Send_an_email_(V2)": {
+                "runAfter": {},
+                "type": "ApiConnection",
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "body": {
+                        "To": "@triggerBody()?['receiver']",
+                        "Subject": "Failure - Azure Data Factory: @{triggerBody()?['dataFactoryName']} Pipeline: @{triggerBody()?['pipelineName']}",
+                        "Body": "<p class=\"editor-paragraph\">@{triggerBody()?['message']}</p>",
+                        "Importance": "High"
+                    },
+                    "path": "/v2/Mail"
+                }
+            }
+        },
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "type": "Object",
+                "defaultValue": {}
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "office365": {
+                    "id": "/subscriptions/48338062-edae-47b1-9ed7-19c41d9c6aae/providers/Microsoft.Web/locations/uksouth/managedApis/office365",
+                    "connectionId": "/subscriptions/48338062-edae-47b1-9ed7-19c41d9c6aae/resourceGroups/WeatherProject/providers/Microsoft.Web/connections/office365",
+                    "connectionName": "office365"
+                }
+            }
+        }
+    }
+}
