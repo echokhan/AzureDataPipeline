@@ -91,7 +91,29 @@ This Logic App is designed to handle failure notifications by sending an automat
 And example:
 ![image](https://github.com/user-attachments/assets/32041443-7bbe-454c-8237-94ced489a570)
 
+## Power BI Dashboard: Hourly Weather & Trends
+![image](https://github.com/user-attachments/assets/76edf0b2-f8b9-4fba-aac8-853bd1608d1b)
+### Purpose
+The Power BI dashboard provides a comprehensive view of current and historical weather data, offering insights into real-time conditions and trends over time. It is designed to help users track weather patterns, monitor current conditions, and analyze trends based on historical data.
 
+## Dashboard
+
+1. **Latest Weather**:
+   - Displays the most recent hourly weather data, including temperature, feels-like temperature, wind speed, humidity, and weather conditions.
+   - Key metrics such as the 7-day rolling average temperature, today’s maximum and minimum temperatures are highlighted for quick insights.
+2. **City Selector**:
+   - Allows users to filter data by city (e.g., Bristol, Cardiff, London), enabling a focused view of weather data specific to each location.
+3. **Historic Trends**:
+   - Provides interactive filters for year, month, day, and date, allowing users to explore historical weather data and trends.
+   - Graphs show the **Average Temperature** (actual vs. feels-like) and **Average Wind** speed over the day.
+4. **Forecast**:
+   - Visualizes projected average temperatures for the coming years, providing a forecasted trend line with confidence intervals.
+5. **Summary Statistics**:
+   - Displays important aggregated metrics such as average temperature, maximum/minimum temperature, maximum humidity, and maximum wind speed, giving users a snapshot of weather extremes and averages.
+6. **Geographical Map**:
+   - Shows the average temperature distribution across selected cities, providing a spatial overview of temperature variations.
+### Summary
+This dashboard combines real-time data, historical trends, and forecasted weather to give users a complete overview of weather patterns. With interactive filtering options, users can customize their view to explore specific time frames, cities, or weather metrics, making it a powerful tool for analyzing and understanding weather data trends.
 
 
 
