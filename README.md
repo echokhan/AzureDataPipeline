@@ -3,13 +3,13 @@
 
 ## 1- Overview
 This project implements an end-to-end ETL pipeline to ingest, process, and store weather data from multiple sources (REST API and CSV file) into a cloud-based data warehouse, making it ready for visualization. This pipeline is designed to handle both real-time and batch processing, with orchestration and monitoring capabilities for robust, scalable data processing.
-Key Features:
-Idempotency: Upserts/merge are used to ensure that no duplication of any weather record occurs and all rows in transformed and semantic layers are unique for an hour, city and weather_id.
-Operational Montoring: Failure updates for any pipeline are configured for all activities, ensuring prompt measures.
-Holistic Visualization: Dashboard visualizes live and historical data, along with an attempt to forecast weather.
-Data Lineage: Audit columns such as raw_timestamp and source allow source and original time tracking.
-Event Driven: Use of dim city as control table and scheduled triggers make the pipeline highly automated, requiring minimum intervention.
-Backfilling: Due to the nature of idempotency, backfilling is an embeded feature and old data can be updated or even inserted based on hour, city and weather_id.
+### Key Features:
+* Idempotency: Upserts/merge are used to ensure that no duplication of any weather record occurs and all rows in transformed and semantic layers are unique for an hour, city and weather_id.
+* Operational Montoring: Failure updates for any pipeline are configured for all activities, ensuring prompt measures.
+* Holistic Visualization: Dashboard visualizes live and historical data, along with an attempt to forecast weather.
+* Data Lineage: Audit columns such as raw_timestamp and source allow source and original time tracking.
+* Event Driven: Use of dim city as control table and scheduled triggers make the pipeline highly automated, requiring minimum intervention.
+* Backfilling: Due to the nature of idempotency, backfilling is an embeded feature and old data can be updated or even inserted based on hour, city and weather_id.
 
 
 ## 2- Architecture
