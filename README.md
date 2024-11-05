@@ -76,8 +76,21 @@ This pipeline ingests and processes real-time weather data from the OpenWeather 
    - **Failure Notification**:
      - If any part of the pipeline fails, a failure notification is triggered, sending an email to alert the team. This allows for immediate troubleshooting and ensures that issues are promptly addressed.
 
-#### Summary
-The hourly data load pipeline ensures that the data warehouse is continuously updated with real-time weather information for each city. By iterating over the list of cities and applying the required transformations, this pipeline makes the data available for reporting with minimal latency. The failure notification mechanism provides robust error handling, improving the reliability of the pipeline.
+## Logic App: Failure Notification
+<img width="245" alt="image" src="https://github.com/user-attachments/assets/644618f0-ffb4-4c5b-8ba8-63d616bfaf86">
+
+This Logic App is designed to handle failure notifications by sending an automated email when triggered by an HTTP request. Here’s how it works:
+
+1. **When an HTTP Request is Received**:
+   - This trigger listens for an incoming HTTP request, which can be sent from the data pipeline or other workflows in case of an error or failure event.
+   - When the HTTP request is received, it initiates the process to send an email notification.
+
+2. **Send an Email (V2)**:
+   - After the HTTP request is triggered, this step automatically sends an email to a predefined recipient(s).
+   - The email includes details about the failure, allowing the team to quickly respond to issues within the pipeline.
+And example:
+![image](https://github.com/user-attachments/assets/32041443-7bbe-454c-8237-94ced489a570)
+
 
 
 
