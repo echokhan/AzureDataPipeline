@@ -7,7 +7,7 @@ This project implements an end-to-end ETL pipeline to ingest, process, and store
 * Idempotency: Upserts/merge are used to ensure that no duplication of any weather record occurs and all rows in transformed and semantic layers are unique for an hour, city and weather_id.
 * Operational Montoring: Failure updates for any pipeline are configured for all activities, ensuring prompt measures.
 * Holistic Visualization: Dashboard visualizes live and historical data, along with an attempt to forecast weather.
-* Data Lineage: Audit columns such as raw_timestamp and source allow source and original time tracking.
+* Data Lineage: Audit columns such as raw_timestamp and source allow source and ingestion time tracking.
 * Event Driven: Use of dim city as control table and scheduled triggers make the pipeline highly automated, requiring minimum intervention.
 * Backfilling: Due to the nature of idempotency, backfilling is an embeded feature and old data can be updated or even inserted based on hour, city and weather_id.
 * Robustness: Retry mechanisms are in place within the orchestration (e.g., if the API or file ingestion fails, the system should retry before sending failure notifications)
