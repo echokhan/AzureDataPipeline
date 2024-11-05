@@ -3,8 +3,16 @@
 
 ## 1- Overview
 This project implements an end-to-end ETL pipeline to ingest, process, and store weather data from multiple sources (REST API and CSV file) into a cloud-based data warehouse, making it ready for visualization. This pipeline is designed to handle both real-time and batch processing, with orchestration and monitoring capabilities for robust, scalable data processing.
+### Key Features:
+* Idempotency: Upserts/merge are used to ensure that no duplication of any weather record occurs and all rows in transformed and semantic layers are unique for an hour, city and weather_id.
+* Operational Montoring: Failure updates for any pipeline are configured for all activities, ensuring prompt measures.
+* Holistic Visualization: Dashboard visualizes live and historical data, along with an attempt to forecast weather.
+* Data Lineage: Audit columns such as raw_timestamp and source allow source and original time tracking.
+* Event Driven: Use of dim city as control table and scheduled triggers make the pipeline highly automated, requiring minimum intervention.
+* Backfilling: Due to the nature of idempotency, backfilling is an embeded feature and old data can be updated or even inserted based on hour, city and weather_id.
 
-## Architecture
+
+## 2- Architecture
 ![WeatherETL](https://github.com/user-attachments/assets/a5236f4a-a206-405b-bde5-d447da5a29b3)
 
 The pipeline follows a layered architecture:
@@ -20,7 +28,7 @@ The pipeline follows a layered architecture:
 5. **Monitoring**: Provides alerts and failure notifications to ensure the pipeline is running smoothly.
 6. **Visualization**: Connects the final semantic layer to Power BI for live and historical reporting.
 
-## Data Model
+## 3- Schema
 ![image](https://github.com/user-attachments/assets/3c7c9538-5fa8-4f43-82b5-540e5039922a)
 
 The data model for this ETL pipeline is designed with three primary layers to manage data processing and transformation, ensuring each layer serves a specific purpose in preparing data for analysis and reporting. The model progresses through raw, transformed, and semantic layers, each with its own tables and processes.
@@ -33,7 +41,7 @@ This layered data model ensures a clean, organized, and optimized approach to da
 This structured approach makes the pipeline scalable, maintainable, and adaptable for new data sources or additional transformations in the future.
 More detail in Data directory.
 
-## Orchestration
+## 4- Orchestration
 Batch Load Pipeline
 ![image](https://github.com/user-attachments/assets/34e43cae-3125-4318-bd71-f7fa3b0b5d2b)
 ### Batch Data Load Pipeline
@@ -76,7 +84,7 @@ This pipeline ingests and processes real-time weather data from the OpenWeather 
    - **Failure Notification**:
      - If any part of the pipeline fails, a failure notification is triggered, sending an email to alert the team. This allows for immediate troubleshooting and ensures that issues are promptly addressed.
 
-## Logic App: Failure Notification
+## 5- Logic App: Failure Notification
 <img width="245" alt="image" src="https://github.com/user-attachments/assets/644618f0-ffb4-4c5b-8ba8-63d616bfaf86">
 
 This Logic App is designed to handle failure notifications by sending an automated email when triggered by an HTTP request. Here’s how it works:
@@ -96,7 +104,7 @@ And example:
 ### Purpose
 The Power BI dashboard provides a comprehensive view of current and historical weather data, offering insights into real-time conditions and trends over time. It is designed to help users track weather patterns, monitor current conditions, and analyze trends based on historical data.
 
-## Dashboard
+## 6- Dashboard
 
 1. **Latest Weather**:
    - Displays the most recent hourly weather data, including temperature, feels-like temperature, wind speed, humidity, and weather conditions.
@@ -116,6 +124,7 @@ The Power BI dashboard provides a comprehensive view of current and historical w
 This dashboard combines real-time data, historical trends, and forecasted weather to give users a complete overview of weather patterns. With interactive filtering options, users can customize their view to explore specific time frames, cities, or weather metrics, making it a powerful tool for analyzing and understanding weather data trends.
 
 
-
-
+## 7- Future Work
+* Schema Validation: Get Metadata activity in ADF can be used to validate schema of API and bulk CSV.
+* Optimization: Possible use of lakehouse for partitioning. This will result in cost reduction for storage and compute resulting in scalability. Optimization of joins and queries by indexing key columns.
 
