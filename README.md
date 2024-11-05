@@ -101,13 +101,12 @@ This Logic App is designed to handle failure notifications by sending an automat
 And example:
 ![image](https://github.com/user-attachments/assets/32041443-7bbe-454c-8237-94ced489a570)
 
-## Power BI Dashboard: Hourly Weather & Trends
+## 6- Power BI Dashboard: Hourly Weather & Trends
 ![image](https://github.com/user-attachments/assets/76edf0b2-f8b9-4fba-aac8-853bd1608d1b)
 ### Purpose
 The Power BI dashboard provides a comprehensive view of current and historical weather data, offering insights into real-time conditions and trends over time. It is designed to help users track weather patterns, monitor current conditions, and analyze trends based on historical data.
 
-## 6- Dashboard
-
+#### Features
 1. **Latest Weather**:
    - Displays the most recent hourly weather data, including temperature, feels-like temperature, wind speed, humidity, and weather conditions.
    - Key metrics such as the 7-day rolling average temperature, today’s maximum and minimum temperatures are highlighted for quick insights.
